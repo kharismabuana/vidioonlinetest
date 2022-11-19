@@ -1,0 +1,47 @@
+-- a. Answer:
+SELECT ST.STUDENT_ID, NAME, AGE FROM cd.classroom CR
+RIGHT OUTER JOIN cd.student ST
+ON CR.STUDENT_ID = ST.STUDENT_ID
+WHERE CR.CLASSROOM_ID IS NULL
+
+-- b. Answer
+SELECT CLASSROOM_ID, ST.STUDENT_ID, NAME FROM cd.classroom CR
+FULL OUTER JOIN cd.student ST
+ON CR.STUDENT_ID = ST.STUDENT_ID
+
+-- c. Answer
+WITH t1 AS(SELECT STUDENT_ID, NAME, AGE,
+CASE
+	WHEN (AGE) > 15 THEN 'High School'
+	WHEN (AGE) < 16 THEN 'Middle School'
+	END AS GROUP_AGE
+FROM cd.student)
+
+SELECT GROUP_AGE, COUNT(GROUP_AGE) AS NO_OF_STUDENT
+FROM t1
+GROUP BY GROUP_AGE
+
+-- d. Answer
+SELECT * FROM cd.student
+WHERE AGE = (SELECT MAX(AGE) FROM cd.student)
+
+-- ANOTHER QUERY
+
+SELECT * FROM cd.student
+ORDER BY AGE DESC
+LIMIT 1
+
+-- e. Answer
+SELECT *, (SELECT SUM(AGE) 
+		   FROM cd.student ST2
+		   WHERE ST2.STUDENT_ID<=ST1.STUDENT_ID) AS cumulative_age
+FROM cd.student ST1
+ORDER BY ST1.STUDENT_ID
+
+-- f. Answer
+According to the table it can be interpreted that the categories of students that is classified by age shows that there are 3 junior high school/middle school students and 1 high school student. Then there was 1 student who did not enter the class that are not mapped with classroom's table.  We can assume that students who did not join any classes might join the 123 classroom by looking at the age category that has been classified. We could also see the oldest student compared to other students, named Marqueez, which is 16 years old.
+
+Question:
+1. Find the youngest and oldest age of the group age, for each classroom.
+2. For each classroom, how many students.
+3. Find in percentage for each age from total student in table.
